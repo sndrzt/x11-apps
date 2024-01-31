@@ -1,0 +1,74 @@
+#!/usr/bin/make -f
+# debian/rules for the Debian xutils package.
+# Copyright © 2004 Scott James Remnant <scott@netsplit.com>
+# Copyright © 2005 Daniel Stone <daniel@fooishbar.org>
+# Copyright © 2005 David Nusinow <dnusinow@debian.org>
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+STAMP_DIR = stampdir
+
+# This package contains multiple modules as shipped by upstream. Each module is # contained in a subdirectory in the root dir of the package. You must list each
+# subdirectory explicitly so that the build system knows what to build
+DEF_SUBDIRS=bitmap ico oclock rendercheck transset x11perf xbiff xcalc xclipboard xclock xconsole xcursorgen xditview xedit xeyes xgc xload xlogo xmag xman xmore xwd xwud
+SUBDIRS=$(DEF_SUBDIRS)
+CONFIG_STAMPS = $(addprefix $(STAMP_DIR)/configure-, $(SUBDIRS))
+BUILD_STAMPS = $(addprefix $(STAMP_DIR)/build-,$(SUBDIRS))
+
+%:
+	dh $@ --with quilt
+
+override_dh_autoreconf:
+	chmod +x debian/autogen.sh
+	dh_autoreconf debian/autogen.sh -- $(SUBDIRS)
+
+override_dh_auto_configure: $(CONFIG_STAMPS)
+
+$(STAMP_DIR)/configure-%:
+	mkdir -p $(STAMP_DIR)
+	dh_auto_configure -D$* -B$*-build -- \
+		--libdir=\$${prefix}/lib \
+		--disable-silent-rules \
+		MANCONF="/etc/manpath.config" \
+		MKTEMP=/bin/mktemp
+	>$@
+
+override_dh_auto_build: $(BUILD_STAMPS)
+
+$(STAMP_DIR)/build-%:
+	mkdir -p $(STAMP_DIR)
+	dh_auto_build -D$* -B$*-build
+	>$@
+
+override_dh_auto_clean: $(addprefix clean-, $(SUBDIRS))
+	rm -rf stampdir
+
+clean-%:
+	dh_auto_clean -D$* -B$*-build
+
+override_dh_auto_install:
+	for FILE in $(SUBDIRS); do \
+		cd "$$FILE"-build && $(MAKE) DESTDIR=$(CURDIR)/debian/tmp install ; \
+		cd ..; \
+	done
+
+override_dh_missing:
+	dh_missing --list-missing
+
+.PHONY: get-tarballs
+get-tarballs: $(addprefix get-tarball-,$(SUBDIRS))
+
+.PHONY: get-tarball-%
+get-tarball-%:
+	uscan --no-conf --destdir . --download --no-symlink --package $* --upstream-version $(shell awk -F = '/^PACKAGE_VERSION=/ { print $$2 }' < $*/configure ) --watchfile debian/watch.$* || test $$? = 1
+
+.PHONY: update-copyright
+update-copyright: $(addsuffix /COPYING, $(SUBDIRS)) debian/copyright.head
+	cp debian/copyright.head debian/copyright
+	for subdir in $(SUBDIRS); do \
+		echo >> debian/copyright && \
+		echo $$subdir: >> debian/copyright && \
+		sed -e 's/^./  &/' < $$subdir/COPYING >> debian/copyright \
+	|| exit; done
+

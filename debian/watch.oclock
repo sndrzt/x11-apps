@@ -1,0 +1,4 @@
+#git=git://anongit.freedesktop.org/xorg/app/oclock
+version=3
+opts="pgpsigurlmangle=s/$/.sig/" \
+https://xorg.freedesktop.org/releases/individual/app/ oclock-(.*)\.tar\.gz

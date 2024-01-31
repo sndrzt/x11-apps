@@ -1,0 +1,96 @@
+Source: x11-apps
+Section: x11
+Priority: optional
+Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
+Build-Depends:
+ debhelper-compat (= 12),
+ pkg-config,
+# XXX bison build-dep is to work around a bug in xgc's configure, remove as
+# soon as that's fixed.
+ bison,
+ libpng-dev,
+ libx11-dev (>= 2:1.0.0),
+ libxaw7-dev (>= 1:1.0.1),
+ libxcursor-dev (>= 1.1.5.2),
+ libxext-dev (>= 1:1.0.0),
+ libxft-dev (>= 2.1.8.2-6),
+ libxkbfile-dev (>= 1:1.0.1),
+ libxmuu-dev (>= 1:1.0.1),
+ libxrender-dev (>= 1:0.9.0.2-2),
+ libxt-dev (>= 1:1.1.0),
+ libxmu-dev,
+ xbitmaps,
+ x11proto-dev,
+ quilt,
+ xutils-dev (>= 1:7.5+4),
+ man-db,
+# Reasons for build-depends:
+# debhelper for the packaging, pkg-config needed by configure scripts
+# xutils-dev for xorg macros
+# Individual apps:
+# bitmap: libx11-dev, libxmu-dev, xbitmaps, libxt-dev
+# ico: libx11-dev
+# oclock: libx11-dev, libxmu-dev, libxext-dev, libxkbfile-dev
+# transset: libx11-dev, x11proto-core-dev
+# x11perf: libx11-dev, libxmuu-dev, libxrender-dev, libxft-dev, libxext-dev
+# xbiff: xbitmaps, libxext-dev
+# xcalc: libxt-dev, libxaw7-dev
+# xclipboard: libxt-dev
+# xclock: libx11-dev, libxaw7-dev, libxft-dev, libxkbfile-dev, libxt-dev
+# xconsole: libxt-dev, libxaw7-dev
+# xcursorgen: libx11-dev, libxcursor-dev, libpng-dev
+# xditview: libxaw7-dev, libxt-dev
+# xedit: libxaw7-dev, libxt-dev
+# xeyes: libx11-dev, libxt-dev, libxext-dev, libxmu-dev
+# xgc: libxt-dev, libxmu-dev
+# xload: libxaw7-dev, libxt-dev
+# xlogo: libxaw7-dev, libxrender-dev, libxft-dev, libxext-dev, libxt-dev
+# xmag: libxaw7-dev, libxt-dev
+# xman: libxaw7-dev, libxt-dev, man-db
+# xmore: libxaw7-dev, libxt-dev
+# xwd: libx11-dev, x11proto-core-dev
+# xwud: libx11-dev
+Standards-Version: 4.5.0
+Vcs-Git: https://salsa.debian.org/xorg-team/app/x11-apps.git
+Vcs-Browser: https://salsa.debian.org/xorg-team/app/x11-apps
+
+Package: x11-apps
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, man-db
+Recommends: xbitmaps
+Suggests: mesa-utils
+Conflicts: bitmap, oclock, x11perf, xbiff, xcalc, xclipboard, xclock, xconsole,
+ xcursorgen, xditview, xeyes, xgc, xload, xlogo, xmag, xman, xmore, xwd,
+ xwud, transset
+Replaces: xbase-clients (<= 1:7.2.ds2-3), bitmap, oclock, x11perf, xbiff,
+ xcalc, xclipboard, xclock, xconsole, xcursorgen, xditview, xeyes, xgc,
+ xload, xlogo, xmag, xman, xmore, xwd, xwud, transset
+Description: X applications
+ This package provides a miscellaneous assortment of X applications
+ that ship with the X Window System, including:
+  - atobm, bitmap, and bmtoa, tools for manipulating bitmap images;
+  - ico, a demo program animating polyhedrons;
+  - oclock and xclock, graphical clocks;
+  - rendercheck, a program to test render extension implementations;
+  - transset, a tool to set opacity property on a window;
+  - xbiff, a tool which tells you when you have new email;
+  - xcalc, a scientific calculator desktop accessory;
+  - xclipboard, a tool to manage cut-and-pasted text selections;
+  - xconsole, which monitors system console messages;
+  - xcursorgen, a tool for creating X cursor files from PNGs;
+  - xditview, a viewer for ditroff output;
+  - xedit, a simple text editor for X;
+  - xeyes, a demo program in which a pair of eyes track the pointer;
+  - xgc, a graphics demo;
+  - xload, a monitor for the system load average;
+  - xlogo, a demo program that displays the X logo;
+  - xmag, which magnifies parts of the X screen;
+  - xman, a manual page browser;
+  - xmore, a text pager;
+  - xwd, a utility for taking window dumps ("screenshots") of the X session;
+  - xwud, a viewer for window dumps created by xwd;
+  - Xmark, x11perf, and x11perfcomp, tools for benchmarking graphical
+    operations under the X Window System;
+ .
+ The xbiff, xcalc, xconsole, xedit and xman programs use bitmap images
+ provided by the xbitmaps package.

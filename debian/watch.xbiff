@@ -1,0 +1,4 @@
+#git=git://anongit.freedesktop.org/xorg/app/xbiff
+version=3
+opts="pgpsigurlmangle=s/$/.sig/" \
+https://xorg.freedesktop.org/releases/individual/app/ xbiff-(.*)\.tar\.gz

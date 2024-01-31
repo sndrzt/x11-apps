@@ -1,0 +1,7 @@
+usr/bin/*
+usr/share/man/man1/*
+usr/share/X11/xman.help
+usr/include/X11/bitmaps/*
+usr/lib/X11/x11perfcomp/*
+usr/lib/X11/xedit/lisp/*
+etc/X11/app-defaults/*

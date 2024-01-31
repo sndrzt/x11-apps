@@ -1,0 +1,5 @@
+- Check bilinear filtering
+- Check repeating transformed sources
+- Check coordinates for more different transformations
+- Check source/mask pixels falling outside the drawable.
+- Check trapezoids!

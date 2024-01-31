@@ -1,0 +1,4 @@
+# Compulsory line, this is a version 3 file
+version=3
+opts="pgpsigurlmangle=s/$/.sig/" \
+https://xorg.freedesktop.org/archive/individual/app/rendercheck-(.*)\.tar\.gz
